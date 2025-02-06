@@ -1,0 +1,720 @@
+body {
+    background-color: #F5F5F5;
+}
+.topnav {
+    display: flex;
+    justify-content: space-between; /* Distributes space evenly */
+    align-items: center; /* Vertically aligns items */
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(128, 120, 120, 0.2);
+    position: relative;
+}
+.logo {
+    display: flex;
+    align-items: center;
+}
+.circle-icon {
+    background: linear-gradient(to right, #0d7dbe, #4db344);
+    color: #FFFFFF;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 40px;
+    font-weight: bold;
+}
+.bold-name {
+    font-weight: lighter;
+    font-family: Arial, sans-serif;
+}
+.nav-links a.active {
+    color: #98FB98;
+    opacity: 1;
+}
+.nav-links a {
+    color: #000000;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    margin-right: 15px;
+    text-decoration: none;
+}
+.nav-links {
+    margin-top: 20px;  /* Adjust this value as needed */
+}
+.about-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+.profile-picture {
+    border-radius: 50%;
+    box-shadow: 0px 0px 10px #888888;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+.description {
+    max-width: 500px; /* Adjust this to manage the width of your description */
+}
+.description h2 {
+    font-size: 40px; /* Change this value to adjust the size */
+    font-family: sans-serif,sans-serif;  /* Change this value to your preferred font */
+    margin: 0;
+    margin-bottom: 10px;
+}
+.description p {
+    font-size: 16px; /* Change this value to adjust the size */
+    font-family: Arial, sans-serif; /* Change this value to your preferred font */
+    max-width: 500px; /* Adjust this to manage the width of your description */
+}
+.social-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.social-links a {
+    margin-right: 15px;
+}
+
+.social-links img {
+    width: 30px; /* adjust size as needed */
+    height: 30px; /* adjust size as needed */
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #434e57b7;
+}
+
+.email {
+    text-align: center;
+}
+
+.education-box {
+    display: flex;
+    justify-content: space-between;
+    background-color: #59afe444; /* Light Gray D3D3D3*/
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px; /* Some padding so the content isn't right up against the edges */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0.3, 0.3); /* Optional: adds a subtle shadow for a 3D effect */
+    width: 70%;
+    margin: auto;
+    margin-top: 100px;
+    font-family: Helvetica, Arial, sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.education-box:hover {
+    transform: scale(1.05); /* Slightly lifts the box */
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4); /* More prominent shadow */
+}
+
+.education-box h2 {
+    /* Style for the "EDUCATION" title */
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.education-box h3 {
+    /* Style for the degree title */
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.education-box p {
+    /* Style for the education details */
+    margin-bottom: 15px;
+    line-height: 1.5;
+    margin-left: 20px;
+}
+
+.education-box .education-detail {
+    width: 50%;
+    /* Add more styles here if needed. */
+}
+
+.education-box .interests {
+    border-left: 1px solid gray;
+    padding-left: 30px;
+    width: 45%;
+    /* Add more styles here if needed. */
+}
+
+.experience-box {
+    background-color: #59e48e44; /* Light Gray D3D3D3*/
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px; /* Some padding so the content isn't right up against the edges */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0.3, 0.3); /* Optional: adds a subtle shadow for a 3D effect */
+    width: 70%;
+    margin: auto;
+    margin-top: 30px;
+    font-family: Helvetica, Arial, sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.experience-box:hover {
+    transform: scale(1.05); /* Slightly lifts the box */
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4); /* More prominent shadow */
+    /*background-color: rgba(89, 228, 142, 0.6); /* Slightly darken background on hover */
+}
+
+.experience-box h2 {
+    /* Style for the "EDUCATION" title */
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.experience-box h3 {
+    /* Style for the degree title */
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.experience-box p {
+    /* Style for the education details */
+    margin-bottom: 15px;
+    line-height: 1.5;
+    margin-left: 20px;
+}
+
+.publication-box {
+    background-color: #59afe444;; /* Light Gray D3D3D3*/
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px; /* Some padding so the content isn't right up against the edges */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0.3, 0.3); /* Optional: adds a subtle shadow for a 3D effect */
+    width: 70%;
+    margin: auto;
+    margin-top: 30px;
+    font-family: Helvetica, Arial, sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.publication-box:hover {
+    transform: scale(1.05); /* Slightly lifts the box */
+    box-shadow: 8px 8px 15px rgba(0, 0, 0.3, 0.3); /* More prominent shadow */
+}
+
+.publication-box h2 {
+    /* Style for the "EDUCATION" title */
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.publication-box h3 {
+    /* Style for the degree title */
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.publication-box p {
+    /* Style for the education details */
+    margin-bottom: 15px;
+    line-height: 1.5;
+    margin-left: 20px;
+}
+
+.teaching-box {
+    background-color: #d7ec633f; /* Light Gray D3D3D3*/
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px; /* Some padding so the content isn't right up against the edges */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0.3, 0.3); /* Optional: adds a subtle shadow for a 3D effect */
+    width: 70%;
+    margin: auto;
+    margin-top: 30px;
+    font-family: Helvetica, Arial, sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.teaching-box:hover {
+    transform: scale(1.05); /* Slightly lifts the box */
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4); /* More prominent shadow */
+}
+
+.teaching-box h2 {
+    /* Style for the "EDUCATION" title */
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.teaching-box h3 {
+    /* Style for the degree title */
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.teaching-box p {
+    /* Style for the education details */
+    margin-bottom: 15px;
+    line-height: 1.5;
+    margin-left: 20px;
+}
+.interest-list li {
+    margin-bottom: 10px;
+}
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+
+/* Default Light Mode */
+body {
+    background-color: #F5F5F5;
+    color: #000;
+    transition: background-color 0.5s, color 0.3s;
+    font-family: 'Nunito', sans-serif;
+}
+
+body.dark-mode .topnav {
+    background-color: #1e1e1e;
+}
+/* Dark Mode */
+body.dark-mode {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+/* Update links and buttons for better contrast */
+.nav-links a {
+    color: #000000;
+    opacity: 0.6;
+}
+
+.nav-links a.active {
+    color: #98FB98;
+}
+
+body.dark-mode .nav-links a {
+    color: #FFFFFF;
+    opacity: 0.8;
+}
+
+body.dark-mode .nav-links a.active {
+    color: #FFD700;
+}
+
+/* Dark mode for education, publication, and teaching boxes */
+body.dark-mode .education-box,
+body.dark-mode .experience-box,
+body.dark-mode .publication-box,
+body.dark-mode .teaching-box {
+    background-color: #2E2E2E;
+    color: #FFFFFF;
+    box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Style the toggle button */
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+
+/* Default link color */
+a {
+    color: #0077cc; /* Light blue (adjust as needed) */
+    text-decoration: none;
+}
+
+/* Hover effect */
+a:hover {
+    color: #0055aa; /* Darker blue */
+}
+
+/* Dark Mode - Override link color */
+body.dark-mode a {
+    color: #66ccff; /* Lighter blue for visibility */
+}
+
+body.dark-mode a:hover {
+    color: #33bbff; /* Even brighter blue on hover */
+}
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+
+.projects-content {
+    width: 80%;
+    margin: auto;
+    padding: 40px 0;
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: center;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch;
+    padding: 20px;
+}
+
+.project-card {
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: scale(1.05);
+}
+
+.project-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.project-card h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.project-card p {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.project-card a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #0d7dbe;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.project-card a:hover {
+    background: #4db344;
+}
+
+/* Dark Mode Styling */
+body.dark-mode .project-card {
+    background: #2E2E2E;
+    color: #ffffff;
+    box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .project-card a {
+    background: #98FB98;
+    color: #000;
+}
+
+body.dark-mode .project-card a:hover {
+    background: #FFD700;
+}
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* Blog Layout - Makes TOC and Blog Post Align */
+.blog-layout {
+    display: flex;
+    align-items: flex-start; /* Ensures both start at the same top */
+    gap: 20px; /* Adds spacing between TOC and blog post */
+}
+
+.blog-container {
+    width: 80%;
+    margin: auto;
+    padding: 40px 0;
+    text-align: left;
+}
+
+.blog-list {
+    list-style: none;
+    padding: 0;
+}
+
+.blog-list li {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.blog-list a {
+    text-decoration: none;
+    color: #0d7dbe;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.blog-list a:hover {
+    color: #4db344;
+}
+
+.blog-post {
+    width: 100%;
+    margin: auto;
+    padding: 30px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    left: 30px;
+}
+
+.blog-post h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.blog-post p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* Dark Mode */
+body.dark-mode .blog-post {
+    background: #2E2E2E;
+    color: #FFFFFF;
+}
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* Default Style for Collapsible Box */
+.collapsible-container {
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 90%;
+    margin: 20px auto;
+    font-family: 'Nunito', sans-serif;
+    background: var(--custom-bg, #cfdaee); /* Uses custom color if set, otherwise default */
+}
+
+/* Collapsible Button */
+.collapsible {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    font-size: 1.1em;
+    cursor: pointer;
+    color: var(--custom-cl,#007bff);
+    display: flex;
+    align-items: left;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+/* Collapsible Content */
+.content {
+    display: none;
+    padding: 15px;
+    border-radius: 20px;
+    /*border-left: 5px solid #313a2d*/;
+}
+
+/* Expand the Section */
+.content.show {
+    display: block;
+}
+
+/* Dark Mode */
+body.dark-mode .collapsible-container {
+    background: #2E2E2E;
+    color: #ffffff;
+    box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .content {
+    /*background: #3a3a3a;*/
+    border-left-color: #9589fc;
+}
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+
+
+.responsive-img {
+    max-width: 100%; /* Ensures it never exceeds the container */
+    height: auto; /* Maintains aspect ratio */
+    display: block; /* Removes extra spacing */
+    margin: 0 auto; /* Centers the image */
+}
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+
+
+/* Collapsible Code Block */
+.code-container {
+    margin: 10px auto;
+    width: 70%;
+}
+
+/* Button Styling */
+.code-toggle {
+    background: #717274;
+    color: rgb(209, 205, 205);
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.85em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+    border-radius: 3px;
+    transition: background 0.3s;
+}
+
+.code-toggle:hover {
+    background: #565657;
+}
+
+/* Arrow Rotation */
+.code-toggle .arrow {
+    transition: transform 0.3s;
+}
+
+/* Code Block (Initially Hidden) */
+.code-content {
+    display: none;
+    overflow: hidden;
+    padding: 0px;
+    border-radius: 5px;
+    max-height: 600px;
+    overflow-y: auto; /*Enable Vertical Scrolling */
+}
+
+/* Ensure pre and code elements do not have padding */
+pre[class*="language-"] {
+    background: #f5f5f5 !important;
+    color: #333 !important;
+    padding: 8px !important; /* Reduce padding */
+    border-radius: 5px;
+    margin: 0;
+    font-size: 0.85em;
+    text-align: left;
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+    white-space: pre; /* Preserve formatting */
+    display: block;
+}
+
+/* Ensure code stays aligned */
+code[class*="language-"] {
+    display: block;
+    text-align: left;
+    padding: 0 !important;
+    margin: 0 !important;
+    word-wrap: normal; /* Prevents wrapping */
+    white-space: pre;
+}
+
+/* Make scrollbar visible */
+.code-content::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar */
+}
+
+.code-content::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 5px;
+}
+
+.code-content::-webkit-scrollbar-track {
+    background: #eee;
+}
+
+/* Dark Mode Support */
+body.dark-mode .code-toggle {
+    background: #444;
+    color: #fff;
+}
+
+body.dark-mode .code-content pre {
+    background: #ffffff !important;
+}
+
+body.dark-mode .code-content::-webkit-scrollbar-thumb {
+    background: #777;
+}
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+
+/* TOC Container */
+#toc-container {
+    position: sticky;
+    top: 10px;
+    max-width: 400px;
+    background: var(--toc-bg, #f8f9fa); /* Light mode default */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-left: -100px;
+}
+
+/* TOC Header */
+#toc-container h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+/* TOC List */
+#toc-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* TOC Links */
+#toc-list li a {
+    display: block;
+    padding: 5px 10px;
+    color: var(--toc-text, #007bff);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+#toc-list li a:hover {
+    background: var(--toc-hover, #e3f2fd);
+}
+
+/* Dark Mode Support */
+body.dark-mode #toc-container {
+    background: #2e2e2e;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode #toc-list li a {
+    color: #ffcc00;
+}
+
+body.dark-mode #toc-list li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
