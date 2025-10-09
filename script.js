@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Check for saved theme preference in localStorage
     if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
-        if (toggleButton) toggleButton.textContent = "🔥"; // Change button icon
+        if (toggleButton) toggleButton.textContent = "☀️"; // Change button icon
         if (githubLogo) githubLogo.src = githubDark; // Change GitHub logo
     }
 
@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (document.body.classList.contains("dark-mode")) {
                 localStorage.setItem("theme", "dark");
-                toggleButton.textContent = "🔥"; // Change to fire icon
+                toggleButton.textContent = "☀️"; // Change to fire icon
                 if (githubLogo) githubLogo.src = githubDark;
             } else {
                 localStorage.setItem("theme", "light");
-                toggleButton.textContent = "🕯"; // Change to candle icon
+                toggleButton.textContent = "🌙"; // Change to candle icon
                 if (githubLogo) githubLogo.src = githubLight;
             }
         });
