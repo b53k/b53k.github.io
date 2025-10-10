@@ -12,7 +12,7 @@
     </script>
     <!--meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"-->
-    <title>Calculus of Variation</title>
+    <title>Ball Walk vs HAR</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>
@@ -49,13 +49,730 @@
              </div>
             
             <div class="blog-post">
-                <h2 style="text-align: center;">Compiled Notes</h2>
-                <iframe 
-                class="pdf-viewer"
-                src="Pdf/Optimal_Control_and_Learning.pdf"
-                title="My Notes: Optimal Control & Learning"
-                loading="lazy"
-                ></iframe>
+                <h1 style="text-align: center;">Geometrization</h1>
+                <span style="color: orange;">
+                This page provides a concise overview of algorithmic concepts, containing only the essential technical details. 
+                The material is based on lecture notes by <strong>Prof. Santosh Vempala</strong>, Georgia Institute of Technology (2025). 
+                For a comprehensive mathematical treatment, readers are encouraged to consult the official course notes available at 
+                <a href="https://santoshv.github.io/2025CS6550/contalgos.html" target="_blank" style="color: rgb(90, 146, 231); text-decoration: underline;">
+                    https://santoshv.github.io/2025CS6550/contalgos.html
+                </a>. 
+                This page focuses on visualizations of the algorithms and their corresponding Python implementations.
+                </span>
+
+                <h2>Ball Walk</h2>
+                <p>
+                    The Ball Walk is a simple Markov Chain Monte Carlo (MCMC) method used to explore or sample from complex, possibly high-dimensional regions \(K \subset \mathbb{R}^d\) where direct sampling from \(Q(x) \propto F(x)\) is hard. It's particularly attractive when gradients are unavailable or the function \(F\) is non-differentiable. Unlike gradient-based samplers (e.g., HMC, Langevin dynamics) that rely on smooth energy landscapes, Ball Walk is purely geometric i.e. it <em>diffuses</em> by proposing uniform moves in a small local neighborhood of a ball of radius \(\delta\).
+                </p>
+
+                <div class="collapsible-container" data-color="#e6f7ff">
+                    <button class="collapsible">
+                        <span class="icon">&#128218;</span> <b>Algorithm: Ball Walk</b> <span class="arrow">▼</span>
+                    </button>
+                    <div class="content">
+                        <div class="algo">
+                        <pre><code>
+            <b>Input:</b> Step size \( \delta \), number of steps \( T \),
+            starting point \( x_0 \) in the support of target density \( Q \).
+
+            <b>Repeat</b> \( \forall\, t = 1, \dots, T \):
+
+            1. Pick a random point \( y \) uniformly in the \( d \)-ball centered at \( x_t \) with radius \( \delta \).
+            2. Move to \( y \) with probability \( \min \{ 1, Q(y)/Q(x_t) \} \);
+               otherwise, stay at \( x_t \).
+
+            <b>Return:</b> The final sample \( x_T \) (or the entire trajectory if needed).
+                        </code></pre>
+
+
+
+                    <script>
+                    window.MathJax = {
+                        tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+                        options: {
+                        // Remove 'pre' and 'code' from this list:
+                        skipHtmlTags: ['script','noscript','style','textarea']
+                        }
+                    };
+                    </script>
+                    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="collapsible-container" data-color="#ecffdc">
+                    <button class="collapsible">
+                        <span class="icon">&#128161;</span> <b>Note</b> <span class="arrow">▼</span>
+                    </button>
+                    <div class="content">
+                    <p><strong>
+                        Show that the distribution with density \(Q\) is stationary for the ball walk in a connected, compact, full-dimensional set; i.e., if the distribution of the current point \(x\) has density \(Q\), it remains \(Q\).
+                    </strong></p>
+                    <p>
+                        Let \(K \subset \mathbb{R}^d\) be a connected, compact, full-dimensional set, and let \(Q\) be a density supported on \(K\).
+                        Consider the Ball Walk Metropolis chain with proposal
+                    </p>
+
+                    <p>
+                        \[
+                        s(x,y) \;=\; \frac{\mathbf{1}\{\|y-x\|\le \delta\}}{\mathrm{Vol}(B(0,\delta))}
+                        \]
+                        and acceptance probability
+                        \[
+                        \alpha(x,y) \;=\; \min\ \!\Bigl\{1,\; \frac{Q(y)}{Q(x)}\Bigr\}.
+                        \]
+                    </p>
+
+                    <p>Then the distribution with density \(Q\) is stationary.</p>
+
+                    <h4>Proof (via detailed balance):</h4>
+
+                    <p>
+                        Define the transition kernel
+                    </p>
+                    <p>
+                        \[
+                        P(x,dy)\;=\; s(x,y)\,\alpha(x,y)\,dy \;+\;
+                        \Bigl(1 - \int_{\mathbb{R}^d} s(x,z)\,\alpha(x,z)\,dz\Bigr)\,\delta_x(dy).
+                        \]
+                    </p>
+
+                    <p>
+                        Because the proposal is uniform over the \(\delta\)-ball, it is <em>symmetric</em>:
+                    </p>
+                    <p>
+                        \[
+                        s(x,y) \;=\; s(y,x) \quad \forall\, x,y\in\mathbb{R}^d.
+                        \]
+                    </p>
+
+                    <p>Now for any \(x\neq y\),</p>
+                    <p>
+                        \[
+                        \begin{aligned}
+                            Q(x)\,P(x,dy)
+                            &= Q(x)\,s(x,y)\,\alpha(x,y)\,dy
+                            = Q(x)\,s(x,y)\,\min\!\Bigl\{1,\tfrac{Q(y)}{Q(x)}\Bigr\}\,dy \\
+                            &= s(x,y)\,\min\{Q(x),\,Q(y)\}\,dy \\
+                            &= s(y,x)\,\min\{Q(y),\,Q(x)\}\,dy \\
+                            &= Q(y)\,s(y,x)\,\min\ \!\Bigl\{1,\tfrac{Q(x)}{Q(y)}\Bigr\}\,dy \\
+                            &= Q(y)\,P(y,dx).
+                        \end{aligned}
+                        \]
+                    </p>
+
+                    <p>
+                        Thus the detailed balance condition \(Q(x)P(x,dy)=Q(y)P(y,dx)\) holds for \(x\neq y\).
+                        Integrating both sides over any measurable \(A\subset\mathbb{R}^d\) and adding the on-diagonal mass (the “stay” probability) yields:
+                    </p>
+
+                    <p>
+                        \[
+                        \int Q(x)\,P(x,A)\,dx \;=\; \int_A Q(y)\,dy,
+                        \]
+                        i.e., \(Q\) is stationary.
+                    </p>
+                    </div>
+                </div>
+
+                <p>
+                    The figure below illustrates the <strong>Ball Walk</strong> algorithm in action,
+                    where the goal is to sample from a simplex in 2D.
+                </p>
+
+
+                <div class="figure-row">
+                    <figure class="algo-figure">
+                        <img src="Gifs/ball_walk_0.35.gif" alt="Ball Walk in 2D simplex" class="responsive-img">
+                        <figcaption>Figure&nbsp;1.&nbsp;Ball Walk with \( \delta = 0.35,\, T = 500 \).</figcaption>
+                    </figure>
+
+                    <figure class="algo-figure">
+                        <img src="Gifs/stuck_ball_walk_0.01.gif" alt="Ball Walk in 2D simplex stuck" class="responsive-img">
+                        <figcaption>Figure&nbsp;2.&nbsp;Ball Walk with \( \delta = 0.01,\, T = 50 \).</figcaption>
+                    </figure>
+                </div>
+
+
+
+                <h2>Hit-and-Run</h2>
+                <p>
+                    As we have seen from Figure 2, the Ball Walk algorithm is sensitive to parameters and the shape of the the set we're trying to sample from. In the above figure, the samples obtained from \(50\) steps are highly local i.e. the <em>mixing time</em> is quite low. The mixing time (time to approximate \(Q\) well) depends strongly on \((\delta, T)\) and the geometry of \(K\). If \(\delta\) is too small, the chain moves slowly (high autocorrelation); if too large, the proposals are often rejected. Hit-and-Run is a simpler process that does truly mix rapidly from starting point. It offers superior performance by takinng steps along random lines within the convex body, while the Ball Walk uses steps from a ball around the current point. It avoids issues common to the Ball Walk where starting near the boundary of a convex body can lead to wasted steps, making it generally faster and more robust for sampling from convex bodies.
+                </p>
+                
+                <div class="figure-row">
+                    <figure class="algo-figure">
+                        <img src="Gifs/hitandrun_slowed.gif" alt="Hit-and-Run in 2D simplex" class="responsive-img">
+                        <figcaption>Figure&nbsp;3.&nbsp;Hit-and-Run with \(T = 10 \).</figcaption>
+                    </figure>
+                </div>
+
+
+                <div class="collapsible-container" style="background-color: #EEEDE9;">
+                    <button class="collapsible" data-color="#E4D00A>
+                        <span class="icon">&#128218;</span> <b>Algorithm: Hit-and-Run</b> <span class="arrow">▼</span>
+                    </button>
+                    <div class="content">
+                        <div class="algo">
+                        <pre><code>
+            <b>Input:</b> Number of steps \( T \), starting point \( x_0 \) in the support of target density \( Q \).
+
+            <b>Repeat</b> \( \forall\, t = 1, \dots, T \):
+
+            1. Pick a uniform random direction \( l \) through \( x \).
+            2. Move to uniform random point \( y \) on the chord of \( K\) induced by \(l\)
+
+            <b>Return:</b> The final sample \( x_T \) (or the entire trajectory if needed).
+                        </code></pre>
+
+
+
+                    <script>
+                    window.MathJax = {
+                        tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+                        options: {
+                        // Remove 'pre' and 'code' from this list:
+                        skipHtmlTags: ['script','noscript','style','textarea']
+                        }
+                    };
+                    </script>
+                    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="figure-row">
+                    <figure class="algo-figure">
+                        <img src="Gifs/ball_walk_0.35.gif" alt="Ball Walk in 2D simplex_II" class="responsive-img">
+                        <figcaption>Figure&nbsp;4.&nbsp;Ball Walk with \( \delta = 0.35,\, T = 500 \).</figcaption>
+                    </figure>
+
+                    <figure class="algo-figure">
+                        <img src="Gifs/hitandrun.gif" alt="Hit-and-Run in 2D simplex_II" class="responsive-img">
+                        <figcaption>Figure&nbsp;5.&nbsp;Hit-and-Run with \(T = 500 \).</figcaption>
+                    </figure>
+                </div>
+
+                <p>
+                    Figures 4 and 5 compare the mixing behavior of the Ball Walk and Hit-and-Run algorithms. 
+                    Empirically, in this experiment, the Hit-and-Run sampler converges in fewer iterations (indicating a faster <em>mixing time</em>) and also exhibited a slightly shorter <em>wall-clock time</em> (approximately 4 seconds faster in this experiment). 
+                    This suggests that, in practice and for moderate dimensions, the cost of computing the chord at each step 
+                    is offset by the algorithm’s faster mixing and higher acceptance rate. 
+                    Nevertheless, in high-dimensional settings, the per-iteration expense of chord computation can still dominate, 
+                    and the relative efficiency may depend on the geometry of the feasible region and implementation details.
+                </p>
+
+
+                <h2>Code</h2>
+
+                <div class="code-container">
+                    <button class="code-toggle">
+                        <span class="arrow">▼</span>Code: Geometry of Sampling Domain
+                    </button>
+                    <div class="code-content">
+                        <pre><code class="language-python">
+                            import numpy as np
+                            import matplotlib
+                            import matplotlib.pyplot as plt
+                            from matplotlib import animation
+
+
+                            class K_obj:
+                                def __init__(self, A, b, tol: float = 1e-9):
+                                    """
+                                    K = {x: Ax <= b}
+                                    A: (m, n), b: (m,)
+                                    """
+                                    self.tol = tol
+                                    self.body = self.make_body(A, b)
+
+                                def make_body(self, A, b):
+                                    A = np.asarray(A, dtype=float)
+                                    b = np.asarray(b, dtype=float).reshape(-1)
+                                    assert A.shape[0] == b.shape[0], "dim 1 of A must match dim 1 of b."
+                                    return {"A": A, "b": b, "dim": A.shape[1]}
+
+                                def contains(self, y) -> bool:
+                                    y = np.asarray(y, dtype=float).reshape(-1)
+                                    A, b = self.body["A"], self.body["b"]
+                                    return np.all(A @ y <= b + self.tol)
+                            </code>
+                            </pre>
+                    </div>
+                </div>
+
+
+                <div class="code-container">
+                    <button class="code-toggle">
+                        <span class="arrow">▼</span>Code: Ball Walk
+                    </button>
+                    <div class="code-content">
+                        <pre><code class="language-python">
+                            class BallWalk:
+                                def __init__(self, K_obj, delta=0.35, T=5000, x0=None, Q=None,
+                                            random_seed=2050, return_all=False):
+                                    np.random.seed(random_seed)
+                                    self.K = K_obj
+                                    self.delta = float(delta)
+                                    self.T = int(T)
+                                    self.Q = Q
+                                    self.return_all = bool(return_all)
+
+                                    if x0 is None:
+                                        x = np.zeros(self.K.body["dim"], dtype=float)
+                                    else:
+                                        x = np.array(x0, dtype=float).copy()
+                                    if not self.K.contains(x):
+                                        raise ValueError("Initial point x0 must lie in K.")
+                                    self.x0 = x
+
+                                    self.qx = 1.0 if self.Q is None else float(self.Q(self.x0))
+                                    if not np.isfinite(self.qx) or self.qx <= 0:
+                                        raise ValueError("Q(x0) must be positive and finite.")
+
+                                def _uniform_in_ball(self, center):
+                                    center = np.asarray(center, float)
+                                    n = center.size
+
+                                    # Draw a random vector from n-dimensional standard normal distribution and normalize it
+                                    v = np.random.normal(size=n)
+                                    v /= np.linalg.norm(v)
+
+                                    # Adjust volume scaling of an n-ball to sample uniformly inside the ball
+                                    r = self.delta * (np.random.rand() ** (1.0/n))
+                                    return center + r * v
+
+                                def sample(self):
+                                    x = self.x0.copy()
+                                    qx = self.qx
+                                    traj = [x.copy()]
+                                    for _ in range(self.T):
+                                        y = self._uniform_in_ball(x)
+                                        if self.K.contains(y):
+                                            if self.Q is None:
+                                                x = y
+                                            else:
+                                                qy = float(self.Q(y))
+                                                if qy > 0 and np.isfinite(qy):
+                                                    if np.random.rand() < min(1.0, qy/qx):
+                                                        x, qx = y, qy
+                                        traj.append(x.copy())
+                                    traj = np.vstack(traj)
+                                    self.traj_ = traj
+                                    return traj if self.return_all else traj[-1]
+                            </code>
+                            </pre>
+                    </div>
+                </div>
+
+
+                <div class="code-container">
+                    <button class="code-toggle">
+                        <span class="arrow">▼</span>Code: Visualize Ball Walk
+                    </button>
+                    <div class="code-content">
+                        <pre><code class="language-python">
+                            # -------------------------
+                            # Example Simplex
+                            # -------------------------
+                            n = 2
+                            A = np.vstack([-np.eye(n), np.ones((1, n))])
+                            b = np.hstack([np.zeros(n), [1.0]])
+                            simplex = K_obj(A, b)
+
+
+                            bw = BallWalk(simplex, delta=0.35, T=500, x0=np.array([0.99, 0.01]), return_all=True)
+                            traj = bw.sample()  # full trajectory
+
+
+                            xs, ys = traj[:, 0], traj[:, 1]
+                            x_min, x_max = xs.min() - 0.2, xs.max() + 0.2
+                            y_min, y_max = ys.min() - 0.2, ys.max() + 0.2
+
+                            # Fallback bounds if degenerate
+                            if not np.isfinite([x_min, x_max, y_min, y_max]).all() or x_min == x_max or y_min == y_max:
+                                x_min, x_max, y_min, y_max = -0.2, 1.2, -0.2, 1.2
+
+                            fig, ax = plt.subplots(figsize=(5.5, 5.5))
+                            ax.set_xlim(-0.2, 1.2)
+                            ax.set_ylim(-0.2, 1.2)
+                            ax.set_aspect('equal', adjustable='box')
+                            ax.set_xlabel(r"$x_1$")
+                            ax.set_ylabel(r"$x_2$")
+                            #ax.set_title("Sampling via Ball Walk")
+
+                            # Feasibility mask (computed once)
+                            xx = np.linspace(-0.2, 1.2, 300)
+                            yy = np.linspace(-0.2, 1.2, 300)
+                            X, Y = np.meshgrid(xx, yy)
+                            Z = np.zeros_like(X, dtype=bool)
+                            for i in range(X.shape[0]):
+                                pts = np.c_[X[i], Y[i]]
+                                Z[i] = [simplex.contains(p) for p in pts]
+
+                            # Define color scheme
+                            inside_color = "#8ADAEE"   # soft yellow
+                            outside_color = "#FFFFFF"  # lavender-purple
+                            line_color = "#182227"     # ocean blue
+                            point_color = "#AC0606"    # coral red
+
+                            # Plot feasibility mask
+                            ax.imshow(
+                                np.where(Z, 1, 0),
+                                cmap=matplotlib.colors.ListedColormap([outside_color, inside_color]),
+                                origin='lower',
+                                extent=(-0.2, 1.2, -0.2, 1.2),
+                                alpha=0.9,
+                                interpolation='nearest'
+                            )
+
+                            # Trajectory styling
+                            (line,) = ax.plot([], [], lw=0.5, color=line_color, alpha=0.5, linestyle="--")
+                            pts = ax.scatter([], [], s=8, color=line_color, alpha=0.5)
+                            last = ax.scatter([], [], s=70, marker='x', color=point_color, zorder=5)
+
+                            vertices = np.array([[0, 0], [1, 0], [0, 1]])
+                            plt.plot(*zip(*vertices, vertices[0]), color="k", lw=0.8)
+                            plt.tight_layout()
+
+                            def init():
+                                line.set_data([], [])
+                                pts.set_offsets(np.empty((0, 2)))
+                                last.set_offsets(np.empty((0, 2)))
+                                return (line, pts, last)
+
+                            def update(frame):
+                                # Show trajectory up to frame
+                                xdata = xs[:frame+1]
+                                ydata = ys[:frame+1]
+
+                                # Last 5 samples only for dashed line
+                                window = 5
+                                start = max(0, frame + 1 - window)
+                                x_tail = xdata[start:frame+1]
+                                y_tail = ydata[start:frame+1]
+
+                                # Update dashed tail
+                                line.set_data(x_tail, y_tail)
+
+                                # Scatter all previous points (optional)
+                                pts.set_offsets(np.c_[xdata, ydata])
+
+                                # Highlight current point
+                                last.set_offsets([xdata[-1], ydata[-1]])
+
+                                return (line, pts, last)
+
+                            anim = animation.FuncAnimation(
+                                fig, update, init_func=init,
+                                frames=len(traj), interval=1000, blit=True
+                            )
+
+                            # Save an animated GIF
+                            gif_path = "ball_walk_0.35.gif"
+                            try:
+                                anim.save(gif_path, writer="pillow", fps=10)
+                                saved = True
+                            except Exception as e:
+                                saved = False
+                                print("Could not save GIF:", e)
+
+                            # Display the animation inline (as JSHTML fallback)
+                            from matplotlib.animation import HTMLWriter
+                            display(anim.to_jshtml())
+                            </code>
+                            </pre>
+                    </div>
+                </div>
+                
+
+
+                <div class="code-container">
+                    <button class="code-toggle">
+                        <span class="arrow">▼</span>Code: Hit-and-Run
+                    </button>
+                    <div class="code-content">
+                        <pre><code class="language-python">
+                            class HitAndRun:
+                                def __init__(self, K_obj, T=5000, x0=None, Q=None,
+                                            random_seed=2050, return_all=True,
+                                            tol=1e-8, max_bisect=60, init_step=1.0, max_expand=1e6):
+                                    np.random.seed(random_seed)
+                                    self.K = K_obj
+                                    self.T = int(T)
+                                    self.Q = Q
+                                    self.return_all = bool(return_all)
+                                    self.tol = float(tol)
+                                    self.max_bisect = int(max_bisect)
+                                    self.init_step = float(init_step)
+                                    self.max_expand = float(max_expand)
+
+                                    if x0 is None:
+                                        # Try the origin by default
+                                        x = np.zeros(getattr(self.K, "body", {}).get("dim", 1), dtype=float)
+                                    else:
+                                        x = np.array(x0, dtype=float).copy()
+                                    if not self.K.contains(x):
+                                        raise ValueError("Initial point x0 must lie in K.")
+                                    self.x0 = x
+
+                                    self.qx = 1.0 if self.Q is None else float(self.Q(self.x0))
+                                    if self.Q is not None:
+                                        if not np.isfinite(self.qx) or self.qx <= 0:
+                                            raise ValueError("Q(x0) must be positive and finite.")
+
+                                # --------- Internal helpers ---------
+
+                                @staticmethod
+                                def _rand_unit_vector(n):
+                                    v = np.random.normal(size=n)
+                                    nv = np.linalg.norm(v)
+                                    # In the (virtually impossible) event nv==0, resample
+                                    while nv == 0.0:
+                                        v = np.random.normal(size=n)
+                                        nv = np.linalg.norm(v)
+                                    return v / nv
+
+                                def _boundary_in_direction(self, x, v, sign=1.0):
+                                    """
+                                    Find maximal t >= 0 such that x + sign * t * v stays in K.
+                                    Uses exponential bracketing and then bisection to locate boundary to within `tol`.
+                                    Assumes K is bounded along direction ±v.
+                                    """
+                                    assert sign in (1.0, -1.0)
+                                    t_lo = 0.0
+                                    t_hi = self.init_step
+
+                                    # Exponential search to bracket the boundary
+                                    while t_hi <= self.max_expand and self.K.contains(x + sign * t_hi * v):
+                                        t_lo = t_hi
+                                        t_hi *= 2.0
+
+                                    if t_hi > self.max_expand and self.K.contains(x + sign * t_hi * v):
+                                        raise RuntimeError("Failed to bracket boundary: K may be unbounded along this direction "
+                                                        "(increase max_expand or check K).")
+
+                                    # Now x + sign*t_lo*v is inside; x + sign*t_hi*v is outside (or at least not guaranteed inside)
+                                    # Bisection to locate boundary
+                                    for _ in range(self.max_bisect):
+                                        t_mid = 0.5 * (t_lo + t_hi)
+                                        if self.K.contains(x + sign * t_mid * v):
+                                            t_lo = t_mid
+                                        else:
+                                            t_hi = t_mid
+                                        if (t_hi - t_lo) <= self.tol:
+                                            break
+                                    return t_lo  # the largest "safe" step length inside K to tolerance
+
+                                def _chord_bounds(self, x, v):
+                                    """
+                                    Compute [t_minus, t_plus] such that {x + t v : t in [t_minus, t_plus]} = (line segment) = K ∩ (x + R v),
+                                    located via membership-only search.
+                                    """
+                                    # Positive direction
+                                    t_plus = self._boundary_in_direction(x, v, sign=1.0)
+                                    # Negative direction
+                                    t_minus = -self._boundary_in_direction(x, v, sign=-1.0)
+                                    return t_minus, t_plus
+                                
+
+                                def _chord_bounds_polytope(self, x, v):
+                                    A, b = self.K.body["A"], self.K.body["b"]
+                                    Av = A @ v
+                                    Ax = A @ x
+                                    num = b - Ax
+
+                                    # Initialize to infinite bounds
+                                    t_min = -np.inf
+                                    t_max =  np.inf
+
+                                    pos = Av >  self.tol
+                                    neg = Av < -self.tol
+                                    zer = ~pos & ~neg
+
+                                    if np.any(pos):
+                                        t_max = min(t_max, np.min(num[pos] / Av[pos]))
+                                    if np.any(neg):
+                                        t_min = max(t_min, np.max(num[neg] / Av[neg]))
+                                    # If Av ~ 0, constraint doesn’t limit along v; require feasibility at x already.
+
+                                    if not np.isfinite(t_min) or not np.isfinite(t_max) or t_min > t_max:
+                                        raise RuntimeError("Degenerate chord bounds; check x in K and v.")
+
+                                    return t_min, t_max
+
+
+                                # --------- Sampling ---------
+
+                                def sample(self):
+                                    x = self.x0.copy()
+                                    qx = self.qx
+                                    traj = [x.copy()]
+                                    n = x.size
+
+                                    self.chords = []
+
+                                    for _ in range(self.T):
+                                        # 1) Random direction
+                                        v = self._rand_unit_vector(n)
+
+                                        # 2) Find chord bounds along v
+                                        #t_minus, t_plus = self._chord_bounds(x, v)
+                                        t_minus, t_plus = self._chord_bounds_polytope(x, v)  # faster & exact for polytopes
+
+                                        # save the chord endpoints for plotting
+                                        p_minus = x + t_minus * v
+                                        p_plus  = x + t_plus  * v
+                                        self.chords.append((p_minus.copy(), p_plus.copy()))
+
+
+                                        # 3) Propose uniformly along the chord
+                                        t = np.random.uniform(t_minus, t_plus)
+                                        y = x + t * v
+
+                                        # 4) Accept/reject (MH) if Q is provided; else always accept
+                                        if self.Q is None:
+                                            x = y
+                                        else:
+                                            qy = float(self.Q(y))
+                                            if qy > 0 and np.isfinite(qy):
+                                                if np.random.rand() < min(1.0, qy / qx):
+                                                    x, qx = y, qy
+                                            # if qy invalid or rejected, stay at x
+
+                                        traj.append(x.copy())
+
+                                    traj = np.vstack(traj)
+                                    self.traj_ = traj
+                                    return traj if self.return_all else traj[-1]
+                            </code>
+                            </pre>
+                    </div>
+                </div>
+
+                
+                <div class="code-container">
+                    <button class="code-toggle">
+                        <span class="arrow">▼</span>Code: Visualize Hit-and-Run
+                    </button>
+                    <div class="code-content">
+                        <pre><code class="language-python">
+                            hitnrun = HitAndRun(simplex, T = 500, x0 = np.array([0.99, 0.01]))
+                            traj = hitnrun.sample()
+
+                            xs, ys = traj[:, 0], traj[:, 1]
+                            x_min, x_max = xs.min() - 0.2, xs.max() + 0.2
+                            y_min, y_max = ys.min() - 0.2, ys.max() + 0.2
+
+                            # Fallback bounds if degenerate
+                            if not np.isfinite([x_min, x_max, y_min, y_max]).all() or x_min == x_max or y_min == y_max:
+                                x_min, x_max, y_min, y_max = -0.2, 1.2, -0.2, 1.2
+
+                            fig, ax = plt.subplots(figsize=(5.5, 5.5))
+                            ax.set_xlim(-0.2, 1.2)
+                            ax.set_ylim(-0.2, 1.2)
+                            ax.set_aspect('equal', adjustable='box')
+                            ax.set_xlabel(r"$x_1$")
+                            ax.set_ylabel(r"$x_2$")
+                            #ax.set_title("Sampling via Ball Walk")
+
+                            # Feasibility mask (computed once)
+                            xx = np.linspace(-0.2, 1.2, 300)
+                            yy = np.linspace(-0.2, 1.2, 300)
+                            X, Y = np.meshgrid(xx, yy)
+                            Z = np.zeros_like(X, dtype=bool)
+                            for i in range(X.shape[0]):
+                                pts = np.c_[X[i], Y[i]]
+                                Z[i] = [simplex.contains(p) for p in pts]
+
+                            # Define color scheme
+                            inside_color = "#8ADAEE"   # soft yellow
+                            outside_color = "#FFFFFF"  # lavender-purple
+                            line_color = "#182227"     # ocean blue
+                            point_color = "#AC0606"    # coral red
+
+                            # Plot feasibility mask
+                            ax.imshow(
+                                np.where(Z, 1, 0),
+                                cmap=matplotlib.colors.ListedColormap([outside_color, inside_color]),
+                                origin='lower',
+                                extent=(-0.2, 1.2, -0.2, 1.2),
+                                alpha=0.9,
+                                interpolation='nearest'
+                            )
+
+                            # Trajectory styling
+                            (line,) = ax.plot([], [], lw=0.5, color=line_color, alpha=0.5, linestyle="--")
+                            pts = ax.scatter([], [], s=8, color=line_color, alpha=0.5)
+                            last = ax.scatter([], [], s=70, marker='x', color=point_color, zorder=5)
+                            (chord_line,) = ax.plot([], [], lw=1.2, color="#0F766E", alpha = 0.9)
+
+                            vertices = np.array([[0, 0], [1, 0], [0, 1]])
+                            plt.plot(*zip(*vertices, vertices[0]), color="k", lw=0.8)
+                            plt.tight_layout()
+
+                            def init():
+                                line.set_data([], [])
+                                chord_line.set_data([], [])
+                                pts.set_offsets(np.empty((0, 2)))
+                                last.set_offsets(np.empty((0, 2)))
+                                return (line, chord_line, pts, last)
+
+                            def update(frame):
+                                # Show trajectory up to frame
+                                xdata = xs[:frame+1]
+                                ydata = ys[:frame+1]
+
+                                # Last 5 samples only for dashed line
+                                window = 5
+                                start = max(0, frame + 1 - window)
+                                x_tail = xdata[start:frame+1]
+                                y_tail = ydata[start:frame+1]
+
+                                # Update dashed tail
+                                line.set_data(x_tail, y_tail)
+
+                                # Scatter all previous points (optional)
+                                pts.set_offsets(np.c_[xdata, ydata])
+
+                                # Highlight current point
+                                last.set_offsets([xdata[-1], ydata[-1]])
+
+                                # Chord (latest)
+                                idx = min(frame, len(hitnrun.chords) - 1)
+                                p_minus, p_plus = hitnrun.chords[idx]
+                                chord_line.set_data([p_minus[0], p_plus[0]], [p_minus[1], p_plus[1]])
+
+                                return (line, chord_line, pts, last)
+
+                            anim = animation.FuncAnimation(
+                                fig, update, init_func=init,
+                                frames=len(traj), interval=1000, blit=True
+                            )
+
+                            # Save an animated GIF
+                            gif_path = "hitandrun_time.gif"
+                            try:
+                                anim.save(gif_path, writer="pillow", fps=1)
+                                saved = True
+                            except Exception as e:
+                                saved = False
+                                print("Could not save GIF:", e)
+
+                            # Display the animation inline (as JSHTML fallback)
+                            from matplotlib.animation import HTMLWriter
+                            display(anim.to_jshtml())
+                            </code>
+                            </pre>
+                    </div>
+                </div>
+
+
+
+
+
+
             </div>
         </div>
     </div>

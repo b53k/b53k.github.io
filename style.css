@@ -729,3 +729,40 @@ body.dark-mode #toc-list li a:hover {
   height: calc(100vh - 160px); /* adjust to account for your topnav height */
   border: none;
 }
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+
+/* Figure alog-figure--For Ball Walk*/
+.figure-row {
+  display: grid;
+  grid-template-columns: repeat(2, auto);  /* exactly two columns sized to content */
+  justify-content: center;                 /* center the grid as a whole */
+  align-items: start;
+  gap: 1.5rem;                             /* reduce space between figures */
+  margin: 1.5em 0;
+}
+
+.algo-figure {
+  text-align: center;
+}
+
+.algo-figure img {
+  width: 400px;   /* adjust for desired scale*/
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.algo-figure figcaption {
+  margin-top: 0.5em;
+  font-size: 0.9em;
+  color: #555;
+  font-style: italic;
+}
+
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+/* ========================================================================================================================*/
+
